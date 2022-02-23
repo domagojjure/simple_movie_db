@@ -15,21 +15,24 @@ class Movie {
   final String voteAverage;
 
   Movie({
-    required this.backdropPath,
-    required this.id,
-    required this.originalLanguage,
-    required this.originalTitle,
-    required this.overview,
-    required this.popularity,
-    required this.posterPath,
-    required this.releaseDate,
-    required this.title,
-    required this.video,
-    required this.voteCount,
-    required this.voteAverage,
+    this.backdropPath = '',
+    this.id = -1,
+    this.originalLanguage = '',
+    this.originalTitle = '',
+    this.overview = '',
+    this.popularity = 0.0,
+    this.posterPath = '',
+    this.releaseDate = '',
+    this.title = '',
+    this.video = false,
+    this.voteCount = 0,
+    this.voteAverage = '',
   });
 
   factory Movie.fromJson(dynamic json) {
+    if (json == null) {
+      return Movie();
+    }
     return Movie(
         backdropPath: json['backdrop_path'],
         id: json['id'],
@@ -37,7 +40,9 @@ class Movie {
         originalTitle: json['original_title'],
         overview: json['overview'],
         popularity: json['popularity'],
-        posterPath: json['poster_path'],
+        posterPath: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' +
+            json[
+                'poster_path'], // e sad o ovom moramo popricat jer ovo je takva gimnastika da ja nemogu vjeroavat
         releaseDate: json['release_date'],
         title: json['title'],
         video: json['video'],

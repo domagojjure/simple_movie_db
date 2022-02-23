@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import '../screens/movie_details_screen.dart';
+import '../models/cast.dart';
 
 class MovieItem extends StatelessWidget {
   final int id;
   final String releaseDate;
   final String title;
   final String imageUrl;
-  MovieItem(this.id, this.releaseDate, this.title, this.imageUrl);
+  final String overview;
+  //final List<Cast> cast;
+  MovieItem(
+    this.id,
+    this.releaseDate,
+    this.title,
+    this.imageUrl,
+    this.overview,
+  );
 
   void selectMovie(BuildContext context) {
-    Navigator.of(context).pushNamed(
-      MovieDetails.routeName,
-      //arguments: id,
-    );
+    Navigator.of(context).pushNamed(MovieDetails.routeName,
+        arguments: [title, imageUrl, overview]);
   }
 
   @override
@@ -58,7 +65,7 @@ class MovieItem extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -68,25 +75,40 @@ class MovieItem extends StatelessWidget {
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${title}'),
+                      Container(
+                        width: 140,
+                        child: Text(
+                          '${title}',
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                        ),
+                      ),
                     ],
                   ),
-                  Row(
+                  Column(
                     children: [
-                      Icon(Icons.schedule),
-                      SizedBox(
-                        width: 5,
+                      Row(
+                        children: [
+                          Icon(Icons.schedule),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(releaseDate),
+                        ],
                       ),
-                      Text(releaseDate),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.person),
-                      SizedBox(
-                        width: 5,
+                      Row(
+                        children: [
+                          Icon(Icons.person),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'glumac',
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                          ),
+                        ],
                       ),
-                      Text('glumac'),
                     ],
                   ),
                 ],

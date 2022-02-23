@@ -34,7 +34,7 @@ class CategorySelecter extends StatelessWidget {
                         Navigator.of(context)
                             .pushNamed(ListScreenShows.routeName);
                       },
-                      child: Text('Top Shows',
+                      child: Text('serije',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   SizedBox(
                     height: 50,
