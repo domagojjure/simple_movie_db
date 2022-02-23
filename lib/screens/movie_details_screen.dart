@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cast.dart';
+import '../api/api.dart';
 
 class MovieDetails extends StatelessWidget {
   static final routeName = '/movie-details';
-  var selectedMovie = ['test1', 'test2', 'test3'];
+  final api = new ApiService();
+
+  Widget getCast(int movieId, int index) {
+    return FutureBuilder(
+      builder: (context, projectSnap) {
+        if (projectSnap.connectionState == ConnectionState.none &&
+            projectSnap.hasData == null) {
+          //print('project snapshot data is: ${projectSnap.data}');
+          return Container();
+        } else {
+          final List<Cast> castData = projectSnap.data as List<Cast>;
+          return Text(
+              '${castData[index].name} as ${castData[index].character}');
+        }
+      },
+      future: api.getCastList(movieId),
+    );
+  }
+
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -34,13 +53,15 @@ class MovieDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final passedArgumentsFromMovieItem =
         ModalRoute.of(context)!.settings.arguments as List<Object>;
+    final movieId = passedArgumentsFromMovieItem[0];
+    print(movieId.toString());
     //final List<Cast> cast = passedArgumentsFromMovieItem[3] as List<Cast>;
 
     //final mealId = ModalRoute.of(context)!.settings.arguments as String;
     //final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
     return Scaffold(
       appBar: AppBar(
-        title: Text((passedArgumentsFromMovieItem[0] as String)),
+        title: Text((passedArgumentsFromMovieItem[1] as String)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -53,7 +74,7 @@ class MovieDetails extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   child: Image.network(
-                    passedArgumentsFromMovieItem[1] as String,
+                    passedArgumentsFromMovieItem[2] as String,
                     height: 250,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -71,7 +92,7 @@ class MovieDetails extends StatelessWidget {
                         vertical: 5,
                         horizontal: 10,
                       ),
-                      child: Text(passedArgumentsFromMovieItem[2] as String)),
+                      child: Text(passedArgumentsFromMovieItem[3] as String)),
                 ),
                 itemCount: 1,
               ),
@@ -82,17 +103,16 @@ class MovieDetails extends StatelessWidget {
                 itemBuilder: (ctx, index) => Column(
                   children: [
                     ListTile(
-                      leading: CircleAvatar(
-                        child: Text('# ${(index + 1)}'),
-                      ),
-                      title: Text(
-                        ('CAST'),
-                      ),
-                    ),
+                        leading: CircleAvatar(
+                          child: Text('# ${(index + 1)}'),
+                        ),
+                        title: getCast(movieId as int,
+                            index) //Text('${movieId}'), //getCast(movieId as int),
+                        ),
                     Divider()
                   ],
                 ),
-                itemCount: selectedMovie.length,
+                itemCount: 3, //ovo je duljina glumaca
               ),
             ),
           ],

@@ -19,7 +19,7 @@ class MovieItem extends StatelessWidget {
 
   void selectMovie(BuildContext context) {
     Navigator.of(context).pushNamed(MovieDetails.routeName,
-        arguments: [title, imageUrl, overview]);
+        arguments: [id, title, imageUrl, overview]);
   }
 
   @override
