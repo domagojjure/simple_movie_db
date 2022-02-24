@@ -23,21 +23,6 @@ class ApiService {
     }
   }
 
-  Future<MovieDetail> getMovieDetail(int movieId) async {
-    try {
-      final response = await _dio.get('$baseUrl/movie/$movieId?$apiKey');
-      MovieDetail movieDetail = MovieDetail.fromJson(response.data);
-
-      movieDetail.movieImage = await getMovieImage(movieId);
-
-      movieDetail.castList = await getCastList(movieId);
-
-      return movieDetail;
-    } catch (error, stacktrace) {
-      throw Exception('getMovieDetail');
-    }
-  }
-
   Future<MovieImage> getMovieImage(int movieId) async {
     try {
       final response = await _dio.get('$baseUrl/movie/$movieId/images?$apiKey');
@@ -49,15 +34,23 @@ class ApiService {
 
   Future<List<Cast>> getCastList(int movieId) async {
     try {
-      final response =
-          await _dio.get('$baseUrl/movie/$movieId/credits?$apiKey');
-      var list = response.data['cast'] as List;
-      List<Cast> castList = list
-          .map((c) => Cast(
-              name: c['name'],
-              profilePath: c['profile_path'],
-              character: c['character']))
-          .toList();
+      final url = '$baseUrl/movie/$movieId/credits?$apiKey';
+      final response = await _dio.get(url);
+
+      var list = response.data['cast'] as List; //ovo se izvrši
+      print(list.length);
+      List<Cast> castList = [];
+      for (var i = 0; i < 10; i++) {
+        //print(list[i]['name']);
+        var filler = new Cast(
+            name: list[i]['name'],
+            profilePath: list[i]['profile_path'],
+            character: list[i]['character']);
+        castList.add(filler);
+
+        print(castList[i].name.toString());
+      }
+
       return castList;
     } catch (error, stacktrace) {
       throw Exception('getCastList');
