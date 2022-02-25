@@ -96,19 +96,6 @@ class MovieItem extends StatelessWidget {
                           Text(releaseDate),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Icon(Icons.person),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'glumac',
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ],
