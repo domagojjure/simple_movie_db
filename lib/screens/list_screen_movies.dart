@@ -37,7 +37,8 @@ class ListScreenMovies extends StatelessWidget {
           );
         }
       },
-      future: api.getPopularMovie(),
+      future:
+          api.getPopularMovie(), // tu bi trebao kao argument predati paginaciju
     );
   }
 

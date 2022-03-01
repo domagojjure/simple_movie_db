@@ -12,8 +12,10 @@ class ApiService {
   final String apiKey = 'api_key=9255ffc5e139073439509722ad5733c7';
 
   Future<List<Movie>> getPopularMovie() async {
+    //tu bi kao arugment trebao primiti paginaciju
     try {
-      final url = '$baseUrl/movie/popular?$apiKey';
+      final url =
+          '$baseUrl/movie/popular?$apiKey'; //tu u nastavku dodati /$page (po defaultu je 1)
       final response = await _dio.get(url);
       var movies = response.data['results'] as List;
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();
