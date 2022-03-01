@@ -11,11 +11,12 @@ class ApiService {
   final String baseUrl = 'https://api.themoviedb.org/3';
   final String apiKey = 'api_key=9255ffc5e139073439509722ad5733c7';
 
-  Future<List<Movie>> getPopularMovie() async {
+  Future<List<Movie>> getPopularMovie(int page) async {
     //tu bi kao arugment trebao primiti paginaciju
+    print('u api.dartu page je ${page}');
     try {
       final url =
-          '$baseUrl/movie/popular?$apiKey'; //tu u nastavku dodati /$page (po defaultu je 1)
+          '$baseUrl/movie/popular?$apiKey&page=$page'; //tu u nastavku dodati /$page (po defaultu je 1)
       final response = await _dio.get(url);
       var movies = response.data['results'] as List;
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();

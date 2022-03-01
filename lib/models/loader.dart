@@ -8,9 +8,7 @@ import 'cast.dart';
 class MovieLoader with ChangeNotifier {
   var apiService = ApiService();
   late Future<List<Movie>> downloadedMovies;
-  MovieLoader() {
-    this.downloadedMovies = apiService.getPopularMovie();
-  }
+
   //u ovoj klasi se zove funkcija opisana u api.dart - npr. getPopularMovie()
   // Neznam jel se moze ovako?
 
