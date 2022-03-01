@@ -12,10 +12,13 @@ class ListScreenMovies extends StatelessWidget {
   Widget fillMovieTab() {
     return FutureBuilder(
       builder: (context, projectSnap) {
-        if (projectSnap.connectionState == ConnectionState.none &&
-            projectSnap.hasData == null) {
+        if (projectSnap.connectionState == ConnectionState.none ||
+            projectSnap.data == null) {
           //print('project snapshot data is: ${projectSnap.data}');
-          return Container();
+          return Container(
+              child: Center(
+            child: CircularProgressIndicator(),
+          ));
         } else {
           final List<Movie> movieData = projectSnap.data as List<Movie>;
           return ListView.builder(

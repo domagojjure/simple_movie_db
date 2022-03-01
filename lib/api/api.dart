@@ -22,6 +22,21 @@ class ApiService {
       throw Exception('getPopularMovie');
     }
   }
+  /**var list = response.data['cast'] as List; //ovo se izvrši
+      print(list.length);
+      List<Cast> castList = [];
+      for (var i = 0; i < 10; i++) {
+        //print(list[i]['name']);
+        var filler = new Cast(
+            name: list[i]['name'],
+            profilePath: list[i]['profile_path'],
+            character: list[i]['character']);
+        castList.add(filler);
+
+        print(castList[i].name.toString());
+      }
+
+      return castList;**/
 
   Future<MovieImage> getMovieImage(int movieId) async {
     try {
