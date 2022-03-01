@@ -60,13 +60,17 @@ class ApiService {
       List<Cast> castList = [];
       for (var i = 0; i < 10; i++) {
         //print(list[i]['name']);
-        var filler = new Cast(
-            name: list[i]['name'],
-            profilePath: list[i]['profile_path'],
-            character: list[i]['character']);
-        castList.add(filler);
+        if (list[i]['name'] != null &&
+            list[i]['profile_path'] != null &&
+            list[i]['character'] != null) {
+          var filler = new Cast(
+              name: list[i]['name'],
+              profilePath: list[i]['profile_path'],
+              character: list[i]['character']);
+          castList.add(filler);
 
-        print(castList[i].name.toString());
+          print(castList[i].name.toString());
+        }
       }
 
       return castList;

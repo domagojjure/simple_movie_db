@@ -29,13 +29,13 @@ class CategorySelecter extends StatelessWidget {
                   SizedBox(
                     height: 50,
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(ListScreenShows.routeName);
-                      },
-                      child: Text('serije',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.of(context)
+                  //           .pushNamed(ListScreenShows.routeName);
+                  //     },
+                  //     child: Text('serije',
+                  //         style: TextStyle(fontWeight: FontWeight.bold))),
                   SizedBox(
                     height: 50,
                   ),
