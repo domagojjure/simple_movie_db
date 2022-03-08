@@ -15,7 +15,41 @@ class ListScreenMovies extends StatefulWidget {
 
 class _ListScreenMoviesState extends State<ListScreenMovies> {
   final ApiService api = new ApiService();
+  late Future<List<Movie>> _future;
   var page = 1;
+  ScrollController _controller = ScrollController();
+  @override
+  void initState() {
+    _future = api.getPopularMovie(page);
+
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+        if (page < 3) {
+          page++;
+        }
+
+        setState(() {
+          _controller.animateTo(
+            0,
+            duration: const Duration(seconds: 3),
+            curve: Curves.linear,
+          );
+          _future = api.getPopularMovie(page);
+        });
+      }
+      if (_controller.position.pixels == _controller.position.minScrollExtent) {
+        if (page > 0) {
+          page--;
+        }
+        setState(() {
+          _controller.animateTo(0,
+              duration: const Duration(seconds: 3), curve: Curves.linear);
+          _future = api.getPopularMovie(page);
+        });
+      }
+    });
+  }
 
   Widget fillMovieTab(int page) {
     return FutureBuilder(
@@ -31,6 +65,7 @@ class _ListScreenMoviesState extends State<ListScreenMovies> {
           print('u widgedtu fillmovietab page je ${page} ');
           final List<Movie> movieData = projectSnap.data as List<Movie>;
           return ListView.builder(
+            controller: _controller,
             itemCount: movieData.length,
             itemBuilder: (context, index) {
               return MovieItem(
@@ -46,9 +81,7 @@ class _ListScreenMoviesState extends State<ListScreenMovies> {
           );
         }
       },
-      future: api.getPopularMovie(
-        page,
-      ), // tu bi trebao kao argument predati paginaciju
+      future: _future, // tu bi trebao kao argument predati paginaciju
     );
   }
 
@@ -60,41 +93,41 @@ class _ListScreenMoviesState extends State<ListScreenMovies> {
     return Scaffold(
       appBar: AppBar(
         title: Text('top movies'),
-        actions: [
-          PopupMenuButton(
-              itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: Text('1. page'),
-                      value: 1,
-                    ),
-                    PopupMenuItem(
-                      child: Text('2. page'),
-                      value: 2,
-                    ),
-                    PopupMenuItem(
-                      child: Text('3. page'),
-                      value: 3,
-                    ),
-                    PopupMenuItem(
-                      child: Text('4. page'),
-                      value: 4,
-                    ),
-                  ],
-              onSelected: (value) {
-                setState(() {
-                  if (value == 2) {
-                    page = 2;
-                  } else if (value == 3) {
-                    page = 3;
-                  } else if (value == 4) {
-                    page = 4;
-                  } else if (value == 1) {
-                    page = 1;
-                  }
-                  print('u set stage fazi page je ${page}');
-                });
-              })
-        ],
+        // actions: [
+        //   PopupMenuButton(
+        //       itemBuilder: (context) => [
+        //             PopupMenuItem(
+        //               child: Text('1. page'),
+        //               value: 1,
+        //             ),
+        //             PopupMenuItem(
+        //               child: Text('2. page'),
+        //               value: 2,
+        //             ),
+        //             PopupMenuItem(
+        //               child: Text('3. page'),
+        //               value: 3,
+        //             ),
+        //             PopupMenuItem(
+        //               child: Text('4. page'),
+        //               value: 4,
+        //             ),
+        //           ],
+        //       onSelected: (value) {
+        //         setState(() {
+        //           if (value == 2) {
+        //             page = 2;
+        //           } else if (value == 3) {
+        //             page = 3;
+        //           } else if (value == 4) {
+        //             page = 4;
+        //           } else if (value == 1) {
+        //             page = 1;
+        //           }
+        //           print('u set stage fazi page je ${page}');
+        //         });
+        //       })
+        // ],
       ),
       body: fillMovieTab(page),
       // body: ListView.builder(
