@@ -26,11 +26,12 @@ class _ListScreenMoviesState extends State<ListScreenMovies> {
     super.initState();
     _controller.addListener(() {
       if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-        page++;
-
-        setState(() {
-          _future = api.getPopularMovie(page);
-        });
+        if (page < 2) {
+          page++;
+          setState(() {
+            _future = api.getPopularMovie(page);
+          });
+        }
       }
     });
   }
