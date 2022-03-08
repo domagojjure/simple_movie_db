@@ -14,8 +14,9 @@ class ListScreenMovies extends StatefulWidget {
 }
 
 class _ListScreenMoviesState extends State<ListScreenMovies> {
-  final ApiService api = new ApiService();
+  final ApiService api = ApiService();
   late Future<List<Movie>> _future;
+  List<Movie> listAll = [];
   var page = 1;
   ScrollController _controller = ScrollController();
   @override
@@ -25,26 +26,9 @@ class _ListScreenMoviesState extends State<ListScreenMovies> {
     super.initState();
     _controller.addListener(() {
       if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-        if (page < 3) {
-          page++;
-        }
+        page++;
 
         setState(() {
-          _controller.animateTo(
-            0,
-            duration: const Duration(seconds: 3),
-            curve: Curves.linear,
-          );
-          _future = api.getPopularMovie(page);
-        });
-      }
-      if (_controller.position.pixels == _controller.position.minScrollExtent) {
-        if (page > 0) {
-          page--;
-        }
-        setState(() {
-          _controller.animateTo(0,
-              duration: const Duration(seconds: 3), curve: Curves.linear);
           _future = api.getPopularMovie(page);
         });
       }
@@ -54,8 +38,7 @@ class _ListScreenMoviesState extends State<ListScreenMovies> {
   Widget fillMovieTab(int page) {
     return FutureBuilder(
       builder: (context, projectSnap) {
-        if (projectSnap.connectionState == ConnectionState.none ||
-            projectSnap.data == null) {
+        if (projectSnap.data == null) {
           //print('project snapshot data is: ${projectSnap.data}');
           return Container(
               child: Center(
@@ -64,16 +47,18 @@ class _ListScreenMoviesState extends State<ListScreenMovies> {
         } else {
           print('u widgedtu fillmovietab page je ${page} ');
           final List<Movie> movieData = projectSnap.data as List<Movie>;
+          listAll.addAll(movieData);
+          listAll = listAll.toSet().toList();
           return ListView.builder(
             controller: _controller,
-            itemCount: movieData.length,
+            itemCount: listAll.length,
             itemBuilder: (context, index) {
               return MovieItem(
-                movieData[index].id,
-                movieData[index].releaseDate,
-                movieData[index].title,
-                movieData[index].posterPath,
-                movieData[index].overview,
+                listAll[index].id,
+                listAll[index].releaseDate,
+                listAll[index].title,
+                listAll[index].posterPath,
+                listAll[index].overview,
 
                 //dodati glumce   // E sada nemam pojma kako dodati glumce iz razloga jer mi treba id filma za dohvat.
               );

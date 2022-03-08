@@ -20,6 +20,9 @@ class ApiService {
       final response = await _dio.get(url);
       var movies = response.data['results'] as List;
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();
+      if (page == 3) {
+        print(movieList[1].title);
+      }
       return movieList;
     } catch (error, stacktrace) {
       throw Exception('getPopularMovie');
